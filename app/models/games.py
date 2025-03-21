@@ -1,7 +1,11 @@
-from typing import List
+from typing import List, TYPE_CHECKING
 from sqlmodel import SQLModel, Field, Relationship
 from app.models.configs import GameYamlFileLink
 from app.models.users import GameUserLink
+
+if TYPE_CHECKING:
+    from app.models.configs import YamlFile
+    from app.models.users import User
 
 
 #############################################################################

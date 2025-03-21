@@ -1,20 +1,16 @@
-from typing import List
+from typing import List, TYPE_CHECKING
 from sqlmodel import SQLModel, Field, Relationship
-from pydantic import AnyUrl
+from app.models.links import GameYamlFileLink
+
+if TYPE_CHECKING:
+    from app.models.games import Game
 
 
 #############################################################################
 #                                 YamlFile                                  #
 #############################################################################
-# An archipelago game/server                                                #
+# Yaml files used for configurations                                        #
 #############################################################################
-class GameYamlFileLink(SQLModel, table=True):
-    game_id: int | None = Field(default=None, foreign_key="game.id",
-                                primary_key=True)
-    yaml_file_id: int | None = Field(default=None, foreign_key="yamlfile.id",
-                                     primary_key=True)
-
-
 class YamlFileBase(SQLModel):
     name: str
     location: str

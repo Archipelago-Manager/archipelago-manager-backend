@@ -1,5 +1,9 @@
-from typing import List
+from typing import List, TYPE_CHECKING
 from sqlmodel import SQLModel, Field, Relationship
+from app.models.links import GameUserLink
+
+if TYPE_CHECKING:
+    from app.models.games import Game
 
 
 #############################################################################
@@ -7,13 +11,6 @@ from sqlmodel import SQLModel, Field, Relationship
 #############################################################################
 # A user on a server, not neccessarily an account                           #
 #############################################################################
-class GameUserLink(SQLModel, table=True):
-    game_id: int | None = Field(default=None, foreign_key="game.id",
-                                primary_key=True)
-    user_id: int | None = Field(default=None, foreign_key="user.id",
-                                primary_key=True)
-
-
 class UserBase(SQLModel):
     name: str = Field(max_length=255)
 
@@ -23,7 +20,11 @@ class UserCreate(UserBase):
 
 
 class UserPublic(UserBase):
-    pass
+    id: int
+
+
+class UserPublicWithGames(UserPublic):
+    games: List["Game"]
 
 
 class User(UserBase, table=True):
