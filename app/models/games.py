@@ -1,11 +1,10 @@
 from typing import List, TYPE_CHECKING
 from sqlmodel import SQLModel, Field, Relationship
-from app.models.configs import GameYamlFileLink
-from app.models.users import GameUserLink
+from app.models.links import GameUserLink, GameYamlFileLink
 
 if TYPE_CHECKING:
     from app.models.configs import YamlFile
-    from app.models.users import User
+    from app.models.users import User, UserPublic
 
 
 #############################################################################
@@ -14,11 +13,19 @@ if TYPE_CHECKING:
 # An archipelago game/server                                                #
 #############################################################################
 class GameBase(SQLModel):
-    pass
+    name: str = Field(index=True)
 
 
 class GameCreate(GameBase):
     pass
+
+
+class GamePublic(GameBase):
+    id: int
+
+
+class GamePublicWithUsers(GamePublic):
+    users: List["UserPublic"] = []
 
 
 class Game(GameBase, table=True):

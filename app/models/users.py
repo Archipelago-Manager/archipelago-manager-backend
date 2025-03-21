@@ -24,7 +24,7 @@ class UserPublic(UserBase):
 
 
 class UserPublicWithGames(UserPublic):
-    games: List["Game"]
+    games: List["Game"] = []
 
 
 class User(UserBase, table=True):
