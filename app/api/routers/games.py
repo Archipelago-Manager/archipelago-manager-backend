@@ -10,7 +10,7 @@ router = APIRouter(prefix="/games", tags=["games"])
 
 
 async def start_node_and_get_address(game: Game, session: SessionDep):
-    sleep(5)  # Mock API call to node to set up a server node
+    await sleep(5)  # Mock API call to node to set up a server node
     game.node_port = 38281
     game.node_address = "localhost"
     session.add(game)
