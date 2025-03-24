@@ -9,8 +9,8 @@ router = APIRouter(prefix="/hubs", tags=["hubs"])
 
 @router.post("/", response_model=HubPublic)
 def create_hub(hub: HubCreate, session: SessionDep):
-    hub = session.exec(select(Hub).where(Hub.name == hub.name))
-    if hub:
+    hub_val = session.exec(select(Hub).where(Hub.name == hub.name)).first()
+    if hub_val:
         raise HTTPException(
                 status_code=400,
                 detail="A hub with this name already exists"
