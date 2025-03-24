@@ -36,13 +36,13 @@ async def create_game(game: GameCreate, session: SessionDep,
                       background_tasks: BackgroundTasks,
                       hub: Annotated[Hub, Depends(get_and_verify_hub)]
                       ):
-    hub_max_game_id = hub.max_game_id + 1
+    new_max_hub_game_id = hub.max_game_id + 1
     db_game = Game.model_validate(GameCreateInternal(
         name=game.name,
         hub_id=hub.id,
-        game_id=hub_max_game_id
+        game_id=new_max_hub_game_id
         ))
-    hub.max_game_id = hub_max_game_id
+    hub.max_game_id = new_max_hub_game_id
     session.add(db_game)
     session.add(hub)
     session.commit()
