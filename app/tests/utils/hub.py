@@ -1,7 +1,7 @@
 from sqlmodel import Session
 from app.tests.utils.utils import random_lower_string
 from app.models.hubs import Hub, HubCreate
-from app.models.games import Game, GameCreate
+from app.models.games import Game, GameCreateInternal
 
 
 def create_random_hub(session: Session, description=True) -> Hub:
@@ -17,12 +17,17 @@ def create_random_hub(session: Session, description=True) -> Hub:
     return hub
 
 
-def create_random_game(hub_id: int,
+def create_random_game(hub: Hub,
                        session: Session, description=True) -> Game:
     name = random_lower_string()
-    game = Game.model_validate(GameCreate(name=name, description=description,
-                                          hub_id=hub_id))
-    session.add(game)
+    hub_max_game_id = hub.max_game_id + 1
+    db_game = Game.model_validate(GameCreateInternal(
+        name=name,
+        hub_id=hub.id,
+        game_id=hub_max_game_id
+        ))
+    hub.max_game_id = hub_max_game_id
+    session.add(db_game)
     session.commit()
-    session.refresh(game)
-    return game
+    session.refresh(db_game)
+    return db_game

@@ -1,7 +1,7 @@
 from typing import Annotated, List
 from fastapi import APIRouter, Query, HTTPException
 from app.api.deps import SessionDep
-from app.models.hubs import Hub, HubCreate, HubPublic
+from app.models.hubs import Hub, HubCreate, HubPublic, HubPrivate
 from sqlmodel import select
 
 router = APIRouter(prefix="/hubs", tags=["hubs"])
@@ -31,7 +31,7 @@ def read_hubs(session: SessionDep,
     return hubs
 
 
-@router.get("/{hub_id}", response_model=HubPublic)
+@router.get("/{hub_id}", response_model=HubPrivate)
 def read_hub(hub_id: int, session: SessionDep):
     hub = session.get(Hub, hub_id)
     if not hub:

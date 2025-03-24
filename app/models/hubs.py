@@ -3,7 +3,7 @@ from sqlmodel import SQLModel, Field, Relationship
 
 if TYPE_CHECKING:
     from app.models.users import User, UserPublic
-    from app.models.games import Game, GamePublic
+    from app.models.games import Game, GamePublicWithUsers
     from app.models.accounts import Account
 
 
@@ -28,7 +28,7 @@ class HubPublic(HubBase):
 class HubPrivate(HubBase):
     id: int
     users: List["UserPublic"] = []
-    games: List["GamePublic"] = []
+    games: List["GamePublicWithUsers"] = []
 
 
 class Hub(HubBase, table=True):
@@ -37,3 +37,5 @@ class Hub(HubBase, table=True):
     owner: Optional["Account"] = Relationship(back_populates="owned_hubs")
     users: List["User"] = Relationship(back_populates="hub")
     games: List["Game"] = Relationship(back_populates="hub")
+    max_user_id: int = 0
+    max_game_id: int = 0

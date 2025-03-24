@@ -15,14 +15,19 @@ if TYPE_CHECKING:
 #############################################################################
 class GameBase(SQLModel):
     name: str = Field(index=True)
+    game_id: int
 
 
-class GameCreate(GameBase):
+class GameCreate(SQLModel):
+    name: str = Field(index=True)
+
+
+class GameCreateInternal(GameBase):
     hub_id: int
 
 
 class GamePublic(GameBase):
-    id: int
+    pass
 
 
 class GamePublicWithUsers(GamePublic):
@@ -31,6 +36,8 @@ class GamePublicWithUsers(GamePublic):
 
 class Game(GameBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
+    # game_id is the id of the game within a hub
+    game_id: int | None = Field(index=True)
     node_address: str | None = None
     node_port: int | None = None
     yaml_files: List["YamlFile"] = Relationship(back_populates="games",

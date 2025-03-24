@@ -10,6 +10,7 @@ router = APIRouter(prefix="/users", tags=["users"])
 @router.post("/", response_model=UserPublic)
 def create_user(user: UserCreate, session: SessionDep):
     db_user = User.model_validate(user)
+    db_user.user_id = 1  # TODO: Temp, make it generate from hub
     session.add(db_user)
     session.commit()
     session.refresh(db_user)
