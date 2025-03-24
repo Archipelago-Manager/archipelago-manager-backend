@@ -1,6 +1,7 @@
 from asyncio import sleep
 from typing import Annotated, List
 from fastapi import APIRouter, Query, HTTPException, BackgroundTasks, Depends
+from sqlmodel import select
 from app.api.deps import SessionDep
 from app.models.games import (
         Game,
@@ -11,7 +12,7 @@ from app.models.games import (
 )
 from app.models.users import User
 from app.models.hubs import Hub
-from sqlmodel import select
+from app.api.utils import get_and_verify_hub
 
 router = APIRouter(prefix="/hubs/{hub_id}/games", tags=["games"])
 
@@ -22,13 +23,6 @@ async def start_node_and_get_address(game: Game, session: SessionDep):
     game.node_address = "localhost"
     session.add(game)
     session.commit()
-
-
-async def get_and_verify_hub(hub_id: int, session: SessionDep):
-    hub = session.get(Hub, hub_id)
-    if not hub:
-        raise HTTPException(status_code=404, detail="Hub not found")
-    return hub
 
 
 @router.post("/", response_model=GamePublic)

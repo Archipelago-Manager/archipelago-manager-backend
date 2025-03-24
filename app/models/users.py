@@ -15,10 +15,15 @@ if TYPE_CHECKING:
 #############################################################################
 class UserBase(SQLModel):
     name: str = Field(max_length=255)
+    user_id: int
 
 
-class UserCreate(UserBase):
-    pass
+class UserCreate(SQLModel):
+    name: str = Field(max_length=255)
+
+
+class UserCreateInternal(UserBase):
+    hub_id: int
 
 
 class UserPublic(UserBase):
