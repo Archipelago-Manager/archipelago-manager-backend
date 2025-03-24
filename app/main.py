@@ -5,6 +5,7 @@ from app.api.routers import users, games
 from app.models.configs import YamlFile
 from app.models.users import User, UserPublic
 from app.models.games import Game, GamePublicWithUsers
+from app.models.hubs import Hub
 from app import models
 
 
