@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 from sqlmodel import Session
-from app.tests.utils.hub import create_random_hub
+from app.tests.utils.creators import create_random_hub
 
 
 def test_create_hub(client: TestClient):

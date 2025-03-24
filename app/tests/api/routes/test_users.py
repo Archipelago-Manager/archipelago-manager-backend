@@ -1,7 +1,7 @@
 from fastapi.testclient import TestClient
 from app.models.hubs import Hub
 from sqlmodel import Session
-from app.tests.utils.hub import create_random_game, create_random_user
+from app.tests.utils.creators import create_random_game, create_random_user
 
 
 def test_create_user(client: TestClient, hub: Hub):

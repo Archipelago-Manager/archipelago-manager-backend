@@ -4,7 +4,7 @@ from sqlmodel import Session, SQLModel, create_engine
 from sqlmodel.pool import StaticPool
 from app.main import app
 from app.db import get_session
-from app.tests.utils.hub import create_random_hub
+from app.tests.utils.creators import create_random_hub
 
 
 @pytest.fixture(name="session")
