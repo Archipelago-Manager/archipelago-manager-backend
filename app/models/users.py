@@ -5,6 +5,7 @@ from app.models.links import GameUserLink
 if TYPE_CHECKING:
     from app.models.games import Game
     from app.models.accounts import Account
+    from app.models.hubs import Hub
 
 
 #############################################################################
@@ -32,4 +33,7 @@ class User(UserBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
     games: List["Game"] = Relationship(back_populates="users",
                                        link_model=GameUserLink)
+    account_id: Optional[int] = Field(default=None, foreign_key="account.id")
     account: Optional["Account"] = Relationship(back_populates="users")
+    hub_id: Optional[int] = Field(default=None, foreign_key="hub.id")
+    hub: Optional["Hub"] = Relationship(back_populates="users")

@@ -1,10 +1,11 @@
 from typing import List, TYPE_CHECKING
 from sqlmodel import SQLModel, Field, Relationship
-from app.models.links import GameUserLink, GameYamlFileLink
+from app.models.links import GameUserLink, GameYamlFileLink, HubGameLink
 
 if TYPE_CHECKING:
     from app.models.configs import YamlFile
     from app.models.users import User, UserPublic
+    from app.models.hubs import Hub
 
 
 #############################################################################
@@ -36,3 +37,5 @@ class Game(GameBase, table=True):
                                                 link_model=GameYamlFileLink)
     users: List["User"] = Relationship(back_populates="games",
                                        link_model=GameUserLink)
+    hubs: List["Hub"] = Relationship(back_populates="games",
+                                     link_model=HubGameLink)
