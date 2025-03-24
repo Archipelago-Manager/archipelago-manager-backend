@@ -1,9 +1,10 @@
-from typing import List, TYPE_CHECKING
+from typing import List, TYPE_CHECKING, Optional
 from sqlmodel import SQLModel, Field, Relationship
 from app.models.links import GameUserLink
 
 if TYPE_CHECKING:
     from app.models.games import Game
+    from app.models.accounts import Account
 
 
 #############################################################################
@@ -31,3 +32,4 @@ class User(UserBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
     games: List["Game"] = Relationship(back_populates="users",
                                        link_model=GameUserLink)
+    account: Optional["Account"] = Relationship(back_populates="users")
