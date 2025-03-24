@@ -6,6 +6,7 @@ from app.models.configs import YamlFile
 from app.models.users import User, UserPublic
 from app.models.games import Game, GamePublicWithUsers
 from app.models.hubs import Hub
+from app.models.accounts import Account
 from app import models
 
 
