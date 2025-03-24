@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 # A hub where several games and users are collected                         #
 #############################################################################
 class HubBase(SQLModel):
-    name: str = Field(index=True, unique=True)
+    name: str = Field(index=True, unique=True, min_length=1)
     description: str | None = Field(default=None)
 
 
