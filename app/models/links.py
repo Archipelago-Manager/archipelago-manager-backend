@@ -13,10 +13,3 @@ class GameUserLink(SQLModel, table=True):
                                 primary_key=True)
     user_id: int | None = Field(default=None, foreign_key="user.id",
                                 primary_key=True)
-
-
-class HubGameLink(SQLModel, table=True):
-    hub_id: int | None = Field(default=None, foreign_key="hub.id",
-                               primary_key=True)
-    game_id: int | None = Field(default=None, foreign_key="game.id",
-                                primary_key=True)

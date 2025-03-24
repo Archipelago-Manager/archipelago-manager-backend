@@ -1,6 +1,5 @@
 from typing import List, TYPE_CHECKING, Optional
 from sqlmodel import SQLModel, Field, Relationship
-from app.models.links import HubGameLink
 
 if TYPE_CHECKING:
     from app.models.users import User, UserPublic
@@ -37,5 +36,4 @@ class Hub(HubBase, table=True):
     owner_id: Optional[int] = Field(default=None, foreign_key="account.id")
     owner: Optional["Account"] = Relationship(back_populates="owned_hubs")
     users: List["User"] = Relationship(back_populates="hub")
-    games: List["Game"] = Relationship(back_populates="hubs",
-                                       link_model=HubGameLink)
+    games: List["Game"] = Relationship(back_populates="hub")
