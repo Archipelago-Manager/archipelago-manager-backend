@@ -15,6 +15,7 @@ if TYPE_CHECKING:
 #############################################################################
 class HubBase(SQLModel):
     name: str = Field(index=True, unique=True)
+    description: str | None = Field(default=None)
 
 
 class HubCreate(HubBase):

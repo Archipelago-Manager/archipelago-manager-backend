@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from app.db import create_db_and_tables
-from app.api.routers import users, games
+from app.api.routers import users, games, hubs
 from app.models.configs import YamlFile
 from app.models.users import User, UserPublic
 from app.models.games import Game, GamePublicWithUsers
@@ -20,5 +20,6 @@ app = FastAPI(lifespan=lifespan)
 
 app.include_router(users.router)
 app.include_router(games.router)
+app.include_router(hubs.router)
 
 GamePublicWithUsers.model_rebuild()
