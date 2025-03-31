@@ -3,7 +3,7 @@ from fastapi import APIRouter, Query, Depends, HTTPException
 from sqlmodel import select
 from app.api.deps import SessionDep
 from app.models.users import User, UserCreate, UserPublic, UserCreateInternal
-from app.models.games import Game, GamePublic
+from app.models.games import GamePublic
 from app.models.hubs import Hub
 from app.api.utils import get_and_verify_hub
 
