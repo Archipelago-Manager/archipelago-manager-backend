@@ -1,6 +1,6 @@
 # Archipelago Manager Backend
 Backend client for Archipelago Manager, allowing for management of [Archipelago](https://github.com/ArchipelagoMW/Archipelago) servers, giving you access to more advanced features than using [archipelago.gg](archipelago.gg)'s servers.
-servers, giving you access to more advanced features than using [archipelago.gg](archipelago.gg)'s servers. servers, giving you access to more advanced features than using [archipelago.gg](archipelago.gg)'s servers. servers, giving you access to more advanced features than using [archipelago.gg](archipelago.gg)'s servers.
+
 The project started because I wanted to have notifications in Async games.
 
 Made to be self hosted and increase ease of use, especially for larger communities.
