@@ -1,4 +1,7 @@
 # Archipelago Manager Backend
+<a href="https://github.com/Archipelago-Manager/archipelago-manager-backend/actions?query=workflow%3ATest" target="_blank"><img src="https://github.com/Archipelago-Manager/archipelago-manager-backend/workflows/Test/badge.svg" alt="Test"></a>
+<a href="https://coverage-badge.samuelcolvin.workers.dev/redirect/Archipelago-Manager/archipelago-manager-backend" target="_blank"><img src="https://coverage-badge.samuelcolvin.workers.dev/Archipelago-Manager/archipelago-manager-backend.svg" alt="Coverage"></a>
+
 Backend client for Archipelago Manager, allowing for management of [Archipelago](https://github.com/ArchipelagoMW/Archipelago) servers, giving you access to more advanced features than using [archipelago.gg](archipelago.gg)'s servers.
 
 The project started because I wanted to have notifications in Async games.
