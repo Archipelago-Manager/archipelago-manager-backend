@@ -32,6 +32,7 @@ class Settings(BaseSettings):
     AWS_ACCESS_KEY_ID: str | None = None
     AWS_SECRET_ACCESS_KEY: str | None = None
     AWS_BUCKET_NAME: str | None = None
+    AWS_ENDPOINT_URL: str | None = None
 
     DB_BACKEND: Literal["sqlite", "postgres"] = "sqlite"
 

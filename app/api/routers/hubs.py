@@ -1,8 +1,10 @@
 from typing import Annotated, List
-from fastapi import APIRouter, Query, HTTPException
+from fastapi import APIRouter, Query, HTTPException, UploadFile
+from sqlmodel import select
 from app.api.deps import SessionDep
 from app.models.hubs import Hub, HubCreate, HubPublic, HubPrivate
-from sqlmodel import select
+from app.core.file_manager import file_manager
+
 
 router = APIRouter(prefix="/hubs", tags=["hubs"])
 
@@ -45,3 +47,8 @@ def read_hub_from_name(hub_name: str, session: SessionDep):
     if not hub:
         raise HTTPException(status_code=404, detail="Hub not found")
     return hub
+
+
+@router.post("/upload_file/{file_path:path}")
+def upload_file(file_path: str, file: UploadFile):
+    file_manager.write(file.file, file_path)
