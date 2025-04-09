@@ -26,6 +26,11 @@ class Settings(BaseSettings):
 
     ENVIRONMENT: Literal["local", "staging", "production"] = "local"
 
+    STORAGE_TYPE: Literal["local", "aws"] = "local"
+
+    AWS_ACCESS_KEY_ID: str | None = None
+    AWS_SECRET_ACCESS_KEY: str | None = None
+
     DB_BACKEND: Literal["sqlite", "postgres"] = "sqlite"
 
     SQLITE_FILE_NAME: str | None = f"database_{ENVIRONMENT}.db"
