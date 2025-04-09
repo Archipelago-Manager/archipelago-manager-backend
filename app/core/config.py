@@ -26,8 +26,9 @@ class Settings(BaseSettings):
 
     ENVIRONMENT: Literal["local", "staging", "production"] = "local"
 
-    STORAGE_TYPE: Literal["local", "aws"] = "local"
+    SMOKESHOW_AUTH_KEY: str | None = None
 
+    STORAGE_TYPE: Literal["local", "aws"] = "local"
     AWS_ACCESS_KEY_ID: str | None = None
     AWS_SECRET_ACCESS_KEY: str | None = None
     AWS_BUCKET_NAME: str | None = None
