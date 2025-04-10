@@ -29,6 +29,7 @@ class Settings(BaseSettings):
     SMOKESHOW_AUTH_KEY: str | None = None
 
     STORAGE_TYPE: Literal["local", "aws"] = "local"
+    LOCAL_STORAGE_ROOT_FOLDER: str | None = None
     AWS_ACCESS_KEY_ID: str | None = None
     AWS_SECRET_ACCESS_KEY: str | None = None
     AWS_BUCKET_NAME: str | None = None
