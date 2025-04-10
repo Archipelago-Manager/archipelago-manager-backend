@@ -1,5 +1,6 @@
 import boto3
 import tempfile
+from pathlib import Path
 from botocore.client import ClientError
 from typing import IO
 from app.core.config import settings
@@ -41,7 +42,11 @@ class FileManager():
                 )
 
     def _write_local(self, file: IO, save_path: str) -> None:
-        pass
+        filepath = Path(settings.LOCAL_STORAGE_ROOT_FOLDER) / save_path
+        print(filepath)
+        filepath.parent.mkdir(parents=True, exist_ok=True)
+        with open(filepath, 'wb') as f:
+            f.write(file.read())
 
     def write(self, file: IO, save_path: str) -> None:
         if self.storage_type == "aws":
