@@ -1,5 +1,6 @@
 from typing import Annotated, List
 from fastapi import APIRouter, Query, HTTPException, UploadFile
+from fastapi.responses import Response
 from sqlmodel import select
 from app.api.deps import SessionDep
 from app.models.hubs import Hub, HubCreate, HubPublic, HubPrivate
@@ -52,3 +53,11 @@ def read_hub_from_name(hub_name: str, session: SessionDep):
 @router.post("/upload_file/{file_path:path}")
 def upload_file(file_path: str, file: UploadFile):
     file_manager.write(file.file, file_path)
+
+
+@router.get("/download_file/{file_path:path}")
+def download_file(file_path: str):
+    ret_file = file_manager.read(file_path)
+
+    return Response(content=ret_file.read(),
+                    media_type='application/octet-stream')

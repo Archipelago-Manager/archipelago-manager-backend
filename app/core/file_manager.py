@@ -43,7 +43,6 @@ class FileManager():
 
     def _write_local(self, file: IO, save_path: str) -> None:
         filepath = Path(settings.LOCAL_STORAGE_ROOT_FOLDER) / save_path
-        print(filepath)
         filepath.parent.mkdir(parents=True, exist_ok=True)
         with open(filepath, 'wb') as f:
             f.write(file.read())
@@ -54,21 +53,27 @@ class FileManager():
         else:
             self._write_local(file, save_path)
 
-    def _read_s3(self, file_name: str) -> IO:
-        tf = tempfile.TemporaryFile()
-        self.s3.Bucket(settings.AWS_BUCKET_NAME).download_fileobj(file_name,
+    def _read_s3(self, file_path: str) -> IO:
+        tf = tempfile.NamedTemporaryFile()
+        self.s3.Bucket(settings.AWS_BUCKET_NAME).download_fileobj(file_path,
                                                                   tf)
+        tf.seek(0)
         return tf
 
-    def _read_local(self, file_name: str) -> IO:
-        tf = tempfile.TemporaryFile()
+    def _read_local(self, file_path: str) -> IO:
+        tf = tempfile.NamedTemporaryFile()
+        filepath = Path(settings.LOCAL_STORAGE_ROOT_FOLDER) / file_path
+        with open(filepath, "rb") as f:
+            read_bytes = f.read()
+            tf.write(read_bytes)
+            tf.seek(0)
         return tf
 
-    def read(self, file_name: str) -> IO:
+    def read(self, file_path: str) -> IO:
         if self.storage_type == "aws":
-            return self._read_s3(file_name)
+            return self._read_s3(file_path)
         else:
-            return self._read_local(file_name)
+            return self._read_local(file_path)
 
 
 file_manager = FileManager()
