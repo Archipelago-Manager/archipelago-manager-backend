@@ -6,6 +6,7 @@ if TYPE_CHECKING:
     from app.models.configs import YamlFile
     from app.models.users import User, UserPublic
     from app.models.hubs import Hub
+    from app.models.files import File
 
 
 #############################################################################
@@ -40,6 +41,7 @@ class Game(GameBase, table=True):
     game_id: int | None = Field(index=True)
     node_address: str | None = None
     node_port: int | None = None
+    files: List["File"] = Relationship(back_populates="owner_game")
     yaml_files: List["YamlFile"] = Relationship(back_populates="games",
                                                 link_model=GameYamlFileLink)
     users: List["User"] = Relationship(back_populates="games",

@@ -5,6 +5,7 @@ if TYPE_CHECKING:
     from app.models.users import User, UserPublic
     from app.models.games import Game, GamePublicWithUsers
     from app.models.accounts import Account
+    from app.models.files import File
 
 
 #############################################################################
@@ -35,6 +36,7 @@ class Hub(HubBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
     owner_id: Optional[int] = Field(default=None, foreign_key="account.id")
     owner: Optional["Account"] = Relationship(back_populates="owned_hubs")
+    files: List["File"] = Relationship(back_populates="owner_hub")
     users: List["User"] = Relationship(back_populates="hub")
     games: List["Game"] = Relationship(back_populates="hub")
     max_user_id: int = 0
