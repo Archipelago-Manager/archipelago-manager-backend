@@ -7,6 +7,7 @@ from app.models.users import User, UserPublic
 from app.models.games import Game, GamePublicWithUsers 
 from app.models.hubs import Hub, HubPrivate
 from app.models.accounts import Account
+from app.models.files import File
 from app import models
 
 

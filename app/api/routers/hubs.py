@@ -1,10 +1,19 @@
+from pathlib import Path
 from typing import Annotated, List
-from fastapi import APIRouter, Query, HTTPException, UploadFile
+from fastapi import APIRouter, Query, HTTPException, UploadFile, Depends
 from fastapi.responses import Response
 from sqlmodel import select
 from app.api.deps import SessionDep
 from app.models.hubs import Hub, HubCreate, HubPublic, HubPrivate
+from app.models.files import (
+        File,
+        FileCreateHub,
+        FilePublic,
+        FileType,
+        FiletypeToEnum
+        )
 from app.core.file_manager import file_manager
+from app.api.utils import get_and_verify_hub
 
 
 router = APIRouter(prefix="/hubs", tags=["hubs"])
@@ -50,9 +59,33 @@ def read_hub_from_name(hub_name: str, session: SessionDep):
     return hub
 
 
-@router.post("/upload_file/{file_path:path}")
-def upload_file(file_path: str, file: UploadFile):
-    file_manager.write(file.file, file_path)
+@router.post("/{hub_id}/upload_file/{file_path:path}",
+             response_model=FilePublic)
+def upload_file(file_path: str,
+                file: UploadFile, session: SessionDep,
+                hub: Annotated[Hub, Depends(get_and_verify_hub)],
+                desc: str | None = None,
+                ):
+    new_path = Path(f"hubs/{hub.id}/") / file_path
+    # TODO: Check that file path and file suffix is the same
+    ft = FiletypeToEnum(new_path.suffix)
+    if ft not in [FileType.APWORLD, FileType.YAML]:
+        raise HTTPException(status_code=400,
+                            detail=f"Filetype {ft} not allowed")
+    try:
+        file_manager.write(file.file, new_path)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Error raised: {e}")
+    db_file = File.model_validate(FileCreateHub(path=str(new_path),
+                                                description=desc,
+                                                owner_hub_id=hub.id,
+                                                file_type=ft
+                                                ))
+    session.add(db_file)
+    session.add(hub)
+    session.commit()
+    session.refresh(db_file)
+    return db_file
 
 
 @router.get("/download_file/{file_path:path}")

@@ -15,6 +15,17 @@ class FileType(str, enum.Enum):
     OTHER = "OTHER"
 
 
+def FiletypeToEnum(suffix: str) -> FileType:
+    if suffix == ".yml" or suffix == ".yaml":
+        return FileType.YAML
+    elif suffix == ".archipelago":
+        return FileType.ARCHIPELAGO
+    elif suffix == ".apworld":
+        return FileType.APWORLD
+    else:
+        return FileType.OTHER
+
+
 #############################################################################
 #                                   HUB                                     #
 #############################################################################
@@ -23,10 +34,12 @@ class FileType(str, enum.Enum):
 class FileBase(SQLModel):
     path: str = Field(index=True, unique=True, min_length=1)
     description: str | None = Field(default=None)
+    file_type: Optional[FileType]
 
 
 class FileCreateHub(FileBase):
     owner_hub_id: int
+    file_type: FileType
 
 
 class FilePublic(FileBase):

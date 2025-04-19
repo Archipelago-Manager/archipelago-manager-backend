@@ -189,3 +189,4 @@ pip-selfcheck.json
 
 database_test.db
 *.db
+arch_fs/
