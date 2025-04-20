@@ -42,6 +42,16 @@ class FileCreateHub(FileBase):
     file_type: FileType
 
 
+class FileCreateUser(FileBase):
+    owner_user_id: int
+    file_type: FileType
+
+
+class FileCreateGame(FileBase):
+    owner_game_id: int
+    file_type: FileType
+
+
 class FilePublic(FileBase):
     id: int
     file_type: FileType

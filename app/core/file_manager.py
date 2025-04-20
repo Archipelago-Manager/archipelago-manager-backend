@@ -1,9 +1,37 @@
 import boto3
 import tempfile
+import enum
+from sqlmodel import Session
 from pathlib import Path
 from botocore.client import ClientError
 from typing import IO
 from app.core.config import settings
+from app.models.files import (
+        File,
+        FileType,
+        FileCreateHub,
+        FileCreateGame,
+        FileCreateUser,
+        FiletypeToEnum
+        )
+
+
+class FileCreateType(str, enum.Enum):
+    USER = "user"
+    HUB = "hub"
+    GAME = "game"
+
+
+class FileTypeNotMatching(Exception):
+    pass
+
+
+class FileTypeNotAllowed(Exception):
+    pass
+
+
+class FileCreateTypeDoesNotExist(Exception):
+    pass
 
 
 class FileManager():
@@ -74,6 +102,51 @@ class FileManager():
             return self._read_s3(file_path)
         else:
             return self._read_local(file_path)
+
+    def create_file(self, file: IO, file_path: str,
+                    create_type: FileCreateType, session: Session,
+                    db_id: int, desc: str | None = None):
+        ft = FiletypeToEnum(Path(file.filename).suffix)
+        if create_type == FileCreateType.HUB:
+            new_path = Path(f"hubs/{db_id}/") / file_path
+            allowed_ft = [FileType.APWORLD, FileType.YAML]
+            file_db_model = FileCreateHub(path=str(new_path), description=desc,
+                                          owner_hub_id=db_id, file_type=ft)
+        elif create_type == FileCreateType.USER:
+            new_path = Path(f"users/{db_id}/") / file_path
+            allowed_ft = [FileType.YAML]
+            file_db_model = FileCreateUser(path=str(new_path),
+                                           description=desc,
+                                           owner_user_id=db_id,
+                                           file_type=ft)
+        elif create_type == FileCreateType.GAME:
+            new_path = Path(f"games/{db_id}/") / file_path
+            allowed_ft = [FileType.YAML, FileType.ARCHIPELAGO]
+            file_db_model = FileCreateGame(path=str(new_path),
+                                           description=desc,
+                                           owner_game_id=db_id, file_type=ft)
+        else:
+            raise FileCreateTypeDoesNotExist(
+                    "File Create Type {create_type} invalid"
+                    )
+
+        ft_path = FiletypeToEnum(new_path.suffix)
+        if ft is not ft_path:
+            raise FileTypeNotMatching(
+                    f"Filetypes {ft} and {ft_path} is not the same"
+                    )
+        if ft not in allowed_ft:
+            raise FileTypeNotAllowed(f"Filetype {ft} not allowed")
+
+        try:
+            file_manager.write(file.file, new_path)
+        except Exception as e:
+            raise e
+        db_file = File.model_validate(file_db_model)
+        session.add(db_file)
+        session.commit()
+        session.refresh(db_file)
+        return db_file
 
 
 file_manager = FileManager()
