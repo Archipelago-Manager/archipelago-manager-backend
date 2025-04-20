@@ -11,6 +11,7 @@ def test_upload_file_hub(client: TestClient, hub: Hub, session: Session):
                 files=file_j)
         data = response.json()
 
+    print(data)
     assert response.status_code == 200
     assert data["path"] == f"hubs/{hub.id}/testing/test.yaml"
     assert data["description"] == "test"

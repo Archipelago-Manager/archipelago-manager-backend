@@ -69,7 +69,8 @@ def upload_file(file_path: str,
     try:
         db_file = file_manager.create_file(file, file_path,
                                            FileCreateType.HUB,
-                                           session, hub.id)
+                                           session, hub.id,
+                                           desc=desc)
     except FileTypeNotAllowed as e:
         print(e)
     except FileTypeNotMatching as e:
