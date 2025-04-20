@@ -24,7 +24,7 @@ class Settings(BaseSettings):
             env_nested_delimiter='_'
             )
 
-    ENVIRONMENT: Literal["local", "staging", "production"] = "local"
+    ENVIRONMENT: Literal["local", "staging", "production", "test"] = "local"
 
     SMOKESHOW_AUTH_KEY: str | None = None
 
