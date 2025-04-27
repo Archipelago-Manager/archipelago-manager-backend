@@ -1,6 +1,6 @@
 FROM python:3.10
 
-WORKDIR /archipelago-manager-node
+WORKDIR /archipelago-manager-backend
 COPY requirements.txt requirements.txt
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
